@@ -17,8 +17,10 @@ from yaml import load as load_yaml, Loader
 
 #  убрал ConfirmEmailToken
 from backend.models import Shop, Category, Product, ProductInfo, Parameter, ProductParameter, Order, OrderItem, Contact
-from backend.serializers import UserSerializer, CategorySerializer, ShopSerializer, ProductInfoSerializer, \
-    OrderItemSerializer, OrderSerializer, ContactSerializer
+from backend.serializers import UserSerializer, CategorySerializer, ShopSerializer, \
+    ProductInfoSerializer, OrderItemSerializer, OrderSerializer, ContactSerializer
+
+
 # from backend.signals import new_user_registered, new_order
 
 

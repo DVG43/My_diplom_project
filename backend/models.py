@@ -22,7 +22,6 @@ USER_TYPE_CHOICES = (
 )
 
 
-# Create your models here.
 
 
 class UserManager(BaseUserManager):
@@ -98,8 +97,12 @@ class User(AbstractUser):
         verbose_name_plural = "Список пользователей"
         ordering = ('email',)
 
-
-class Shop(models.Model):
+class BaseModel(models.Model):
+    objects = models.Manager()
+    class Meta:
+        abstract = True
+# Модель магазина.
+class Shop(BaseModel):
     name = models.CharField(max_length=50, verbose_name='Название')
     url = models.URLField(verbose_name='Ссылка', null=True, blank=True)
     # user = models.OneToOneField(User, verbose_name='Пользователь',
@@ -117,7 +120,8 @@ class Shop(models.Model):
         return self.name
 
 
-class Category(models.Model):
+# Модель категории товара в магазине.
+class Category(BaseModel):
     name = models.CharField(max_length=40, verbose_name='Название')
     shops = models.ManyToManyField(Shop, verbose_name='Магазины', related_name='categories', blank=True)
 
@@ -130,7 +134,8 @@ class Category(models.Model):
         return self.name
 
 
-class Product(models.Model):
+# Модль наименования продукта для связи названия с категорией.
+class Product(BaseModel):
     name = models.CharField(max_length=80, verbose_name='Название')
     category = models.ForeignKey(Category, verbose_name='Категория', related_name='products', blank=True,
                                  on_delete=models.CASCADE)
@@ -144,7 +149,8 @@ class Product(models.Model):
         return self.name
 
 
-class ProductInfo(models.Model):
+# Модель продукта в конкретном магазине, связан с магазином через Продукт в категорию.
+class ProductInfo(BaseModel):
     name = models.CharField(max_length=80, verbose_name='Наименование', blank=True)
     # external_id = models.PositiveIntegerField(verbose_name='Внешний ИД')
     product = models.ForeignKey(Product, verbose_name='Продукт', related_name='product_infos', blank=True,
@@ -163,7 +169,8 @@ class ProductInfo(models.Model):
         ]
 
 
-class Parameter(models.Model):
+# Перечень различных параметров продукта.
+class Parameter(BaseModel):
     name = models.CharField(max_length=40, verbose_name='Название')
 
     class Meta:
@@ -175,7 +182,8 @@ class Parameter(models.Model):
         return self.name
 
 
-class ProductParameter(models.Model):
+# Модель для увязки продукта и его параметров.
+class ProductParameter(BaseModel):
     product_info = models.ForeignKey(ProductInfo, verbose_name='Информация о продукте',
                                      related_name='product_parameters', blank=True,
                                      on_delete=models.CASCADE)
@@ -191,7 +199,7 @@ class ProductParameter(models.Model):
         ]
 
 
-class Contact(models.Model):
+class Contact(BaseModel):
     user = models.ForeignKey(User, verbose_name='Пользователь',
                              related_name='contacts', blank=True,
                              on_delete=models.CASCADE)
@@ -212,7 +220,8 @@ class Contact(models.Model):
         return f'{self.city} {self.street} {self.house}'
 
 
-class Order(models.Model):
+# Модель заказа.
+class Order(BaseModel):
     user = models.ForeignKey(User, verbose_name='Пользователь',
                              related_name='orders', blank=True,
                              on_delete=models.CASCADE)
@@ -222,6 +231,7 @@ class Order(models.Model):
     #                             blank=True, null=True,
     #                             on_delete=models.CASCADE)
     status = models.BooleanField()
+
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = "Список заказ"
@@ -235,7 +245,8 @@ class Order(models.Model):
     #     return self.ordered_items.aggregate(total=Sum("quantity"))["total"]
 
 
-class OrderItem(models.Model):
+# Модель для увязки заказа и продукта.
+class OrderItem(BaseModel):
     order = models.ForeignKey(Order, verbose_name='Заказ', related_name='ordered_items', blank=True,
                               on_delete=models.CASCADE)
 
