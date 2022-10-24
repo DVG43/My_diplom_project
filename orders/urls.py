@@ -16,6 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+
+from backend.views import CategoryView, ShopView, ProductInfoView, BasketView, RegisterAccount, PartnerUpdate
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+     path('admin/', admin.site.urls),
+     path('create_account/', RegisterAccount .as_view()),
+     path('shop/', ShopView.as_view()),
+     path('category/', CategoryView.as_view()),
+     path('product/', ProductInfoView .as_view()),
+     path('basket/', BasketView.as_view()),
+     path('partnerupdate/', PartnerUpdate.as_view()),
+     # path('sensors/<pk>/', SensoridView.as_view()),
 ]
