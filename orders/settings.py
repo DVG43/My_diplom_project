@@ -41,20 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.auth.models',
-    'django.db' 
+    'django.db',
     'backend.apps.BackendConfig',
     'rest_framework',
     # 'rest_framework.authtoken',
     # 'django_rest_passwordreset',
 ]
-#'django.contrib.sites'
-# 'django.contrib.auth.models',
-# from django.contrib.auth.base_user import BaseUserManager
-# from django.contrib.auth.models import AbstractUser
-# from django.contrib.auth.validators import UnicodeUsernameValidator
-# from django.db import models
-# from django.utils.translation import gettext_lazy as _
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -100,7 +93,7 @@ DATABASES = {
     }
 }
 
-
+AUTH_USER_MODEL = 'backend.User'
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -135,7 +128,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
