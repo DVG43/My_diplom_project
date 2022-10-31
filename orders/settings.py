@@ -10,6 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 # import os
+# import django
+# django.setup()
+
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,14 +41,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.auth.models',
+    'django.db' 
+    'backend.apps.BackendConfig',
     'rest_framework',
-    # 'backend.apps.BackendConfig',
     # 'rest_framework.authtoken',
     # 'django_rest_passwordreset',
 ]
-
+#'django.contrib.sites'
 # 'django.contrib.auth.models',
-
+# from django.contrib.auth.base_user import BaseUserManager
+# from django.contrib.auth.models import AbstractUser
+# from django.contrib.auth.validators import UnicodeUsernameValidator
+# from django.db import models
+# from django.utils.translation import gettext_lazy as _
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'orders.urls'
 
