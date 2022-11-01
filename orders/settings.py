@@ -41,13 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.db',
+
     'backend.apps.BackendConfig',
     'rest_framework',
     # 'rest_framework.authtoken',
     # 'django_rest_passwordreset',
 ]
 
+# 'django.db',
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
