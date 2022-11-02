@@ -1,3 +1,6 @@
+#import os
+import pathlib
+from pathlib import Path
 from distutils.util import strtobool
 
 from django.contrib.auth import authenticate
@@ -298,7 +301,9 @@ class PartnerUpdate(APIView):
         #     return JsonResponse({'Status': False, 'Error': 'Только для магазинов'}, status=403)
 
         # url = request.data.get('url')
-        path_fail = request.data.get('path')
+        # path_fail = request.data.get('path')
+        # path_fail = '/home/ubunta/homeworks/Diplom/my_diplom/Data/shop1.yaml'
+        path_fail = Path(pathlib.Path.cwd(), "Data", "shop1.yaml")
         # if url:
         #     validate_url = URLValidator()
         #     try:
