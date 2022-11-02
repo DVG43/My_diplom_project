@@ -303,14 +303,16 @@ class PartnerUpdate(APIView):
         # url = request.data.get('url')
         # path_fail = request.data.get('path')
         # path_fail = '/home/ubunta/homeworks/Diplom/my_diplom/Data/shop1.yaml'
-        path_fail = Path(pathlib.Path.cwd(), "Data", "shop1.yaml")
+        path_fail_row = Path(pathlib.Path.cwd(), "Data", "shop1.yaml")
+        path_fail = str(path_fail_row)
+        print(path_fail)
         # if url:
         #     validate_url = URLValidator()
         #     try:
         #         validate_url(url)
         #     except ValidationError as e:
         #         return JsonResponse({'Status': False, 'Error': str(e)})
-        if path_fail is str:
+        if isinstance(path_fail, str):
                 # try:
                      # print('файл грузится')
 
@@ -320,10 +322,13 @@ class PartnerUpdate(APIView):
              # else:
                 # stream = get(url).content  # specify path to YML file
                 # data = load_yaml(stream, Loader=Loader)
+            print(str(path_fail))
             with open(f"{path_fail}", 'r') as stream:
                 data = load_yaml(stream, Loader=Loader)
+                print(data)
 
-            shop, _ = Shop.objects.get_or_create(name=data['shop'], user_id=request.user.id)
+
+            shop, _ = Shop.objects.get_or_create(name=data['shop']) # пока такую запись (name=data['shop'], user_id=request.user.id)  поменял
             for category in data['categories']:
                 category_object, _ = Category.objects.get_or_create(id=category['id'], name=category['name'])
                 category_object.shops.add(shop.id)
