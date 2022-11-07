@@ -21,7 +21,7 @@ from backend.views import PartnerUpdate, RegisterAccount, CategoryView, ShopView
     BasketView, ContactView, OrderView, PartnerState, PartnerOrders
 
 # poka iskluchil  LoginAccount  ConfirmAccount  AccountDetails,
-
+app_name = 'backend'
 urlpatterns = [
 
      path('create/account/', RegisterAccount .as_view(), name='user-register'),  # Регистрация методом POST
