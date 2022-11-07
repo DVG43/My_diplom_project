@@ -169,8 +169,7 @@ class ShopView(ListAPIView):
     queryset = Shop.objects.filter(state=True)
     serializer_class = ShopSerializer
 
-
-class ProductInfoView(APIView):
+ class ProductInfoView(APIView):
     """
     Класс для поиска товаров
     """
