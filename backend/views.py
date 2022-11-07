@@ -164,7 +164,6 @@ class ShopView(ListAPIView):
     """
     Класс для просмотра списка магазинов
     """
-
     Shop.objects.create(name='superkonekt', url='', state=True, filename='')   # новая строка для записи нового магазина.
     queryset = Shop.objects.filter(state=True)
     serializer_class = ShopSerializer
