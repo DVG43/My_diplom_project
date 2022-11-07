@@ -23,7 +23,7 @@ from backend.views import PartnerUpdate, RegisterAccount, CategoryView, ShopView
 # poka iskluchil  LoginAccount  ConfirmAccount  AccountDetails,
 
 urlpatterns = [
-     # path('admin/', admin.site.urls),
+
      path('create/account/', RegisterAccount .as_view(), name='user-register'),  # Регистрация методом POST
      path('partner/update/', PartnerUpdate.as_view(), name='partner-update'),   # Oбновления прайса от поставщика POST
      path('partner_status/', PartnerState.as_view(), name='partner-state'),  # работы со статусом поставщика GET and POST

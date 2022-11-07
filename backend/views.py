@@ -160,18 +160,28 @@ class CategoryView(ListAPIView):
     serializer_class = CategorySerializer
 
 
-class ShopView(ListAPIView):
-    """
-    Класс для просмотра списка магазинов
-    """
-    Shop.objects.create(name='superkonekt', url='', state=True, filename='')   # новая строка для записи нового магазина.
-    queryset = Shop.objects.filter(state=True)
-    serializer_class = ShopSerializer
+# class ShopView(ListAPIView):
+#     """
+#     Класс для просмотра списка магазинов
+#     """
+#     Shop.objects.create(name='superkonekt', url='', state=True, filename='')   # новая строка для записи нового магазина.
+#     queryset = Shop.objects.filter(state=True)
+#     serializer_class = ShopSerializer
 
- class ProductInfoView(APIView):
-    """
-    Класс для поиска товаров
-    """
+class ShopView(APIView):
+     # """
+     # Класс для просмотра списка магазинов
+     # """
+    def get(self, request, *args, **kwargs):
+        Shop.objects.create(name='superkonekt', url='', state=True, filename='')
+        queryset = Shop.objects.all()
+        serializer = ShopSerializer(queryset)
+        return Response(serializer.data)
+
+class ProductInfoView(APIView):
+        # """
+        # Класс для поиска товаров
+        # """
     def get(self, request, *args, **kwargs):
 
         query = Q(shop__state=True)
