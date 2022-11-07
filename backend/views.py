@@ -164,6 +164,8 @@ class ShopView(ListAPIView):
     """
     Класс для просмотра списка магазинов
     """
+
+    Shop.objects.create(name='superkonekt', url='', state=True, filename='')   # новая строка для записи нового магазина.
     queryset = Shop.objects.filter(state=True)
     serializer_class = ShopSerializer
 
@@ -322,13 +324,16 @@ class PartnerUpdate(APIView):
              # else:
                 # stream = get(url).content  # specify path to YML file
                 # data = load_yaml(stream, Loader=Loader)
-            print(str(path_fail))
+
             with open(f"{path_fail}", 'r') as stream:
                 data = load_yaml(stream, Loader=Loader)
                 print(data)
 
 
-            shop, _ = Shop.objects.get_or_create(name=data['shop']) # пока такую запись (name=data['shop'], user_id=request.user.id)  поменял
+            shop, _ = Shop.objects.get_or_create(name=data['shop'])
+
+        # пока такую запись (name=data['shop'], user_id=request.user.id)  поменял
+
             for category in data['categories']:
                 category_object, _ = Category.objects.get_or_create(id=category['id'], name=category['name'])
                 category_object.shops.add(shop.id)

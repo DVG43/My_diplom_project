@@ -106,6 +106,8 @@ class User(AbstractUser):
 #     class Meta:
 #         abstract = True
 # # Модель магазина.
+
+
 class Shop(BaseModel):
     name = models.CharField(max_length=50, verbose_name='Название')
     url = models.URLField(verbose_name='Ссылка', null=True, blank=True)
