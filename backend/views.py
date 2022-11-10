@@ -160,23 +160,23 @@ class CategoryView(ListAPIView):
     serializer_class = CategorySerializer
 
 
-# class ShopView(ListAPIView):
-#     """
-#     Класс для просмотра списка магазинов
-#     """
-#     Shop.objects.create(name='superkonekt', url='', state=True, filename='')   # новая строка для записи нового магазина.
-#     queryset = Shop.objects.filter(state=True)
-#     serializer_class = ShopSerializer
+class ShopView(ListAPIView):
+    """
+    Класс для просмотра списка магазинов
+    """
+    # Shop.objects.create(name='superkonekt', url='', state=True, filename='')   # новая строка для записи нового магазина.
+    queryset = Shop.objects.filter(state=True)
+    serializer_class = ShopSerializer
 
-class ShopView(APIView):
-     # """
-     # Класс для просмотра списка магазинов
-     # """
-    def get(self, request, *args, **kwargs):
-        Shop.objects.create(name='nasviazi', url='', state=True, filename='')
-        queryset = Shop.objects.all()
-        serializer = ShopSerializer(queryset)
-        return Response(serializer.data)
+# class ShopView(APIView):
+#      # """
+#      # Класс для просмотра списка магазинов
+#      # """
+#     def get(self, request, *args, **kwargs):
+#         Shop.objects.create(name='nasviazi', url='', state=True, filename='')
+#         queryset = Shop.objects.all()
+#         serializer = ShopSerializer(queryset)
+#         return Response(serializer.data)
 
 class ProductInfoView(APIView):
         # """
@@ -352,7 +352,7 @@ class PartnerUpdate(APIView):
 
                 product_info = ProductInfo.objects.create(product_id=product.id,
                                                           external_id=item['id'],
-                                                          model=item['model'],
+                                                          model=item['name'],
                                                           price=item['price'],
                                                           price_rrc=item['price_rrc'],
                                                           quantity=item['quantity'],
@@ -365,7 +365,7 @@ class PartnerUpdate(APIView):
 
             return JsonResponse({'Status': True})
 
-        # return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
+        # return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})external_id=item['id']
         return JsonResponse({'Status': False, 'Errors': 'Не верно указан путь к файлу'})
 
 class PartnerState(APIView):

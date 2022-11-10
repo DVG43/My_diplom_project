@@ -158,7 +158,7 @@ class Product(BaseModel):
 # Модель продукта в конкретном магазине, связан с магазином через Продукт в категорию.
 class ProductInfo(BaseModel):
     name = models.CharField(max_length=80, verbose_name='Наименование', blank=True)
-    # external_id = models.PositiveIntegerField(verbose_name='Внешний ИД')
+    external_id = models.CharField(max_length=80, default=0, editable=False, verbose_name='Внешний ИД')
     product = models.ForeignKey(Product, verbose_name='Продукт', related_name='product_infos', blank=True,
                                 on_delete=models.CASCADE)
     shop = models.ForeignKey(Shop, verbose_name='Магазин', related_name='product_infos', blank=True,
