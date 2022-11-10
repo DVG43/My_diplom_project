@@ -173,7 +173,7 @@ class ShopView(APIView):
      # Класс для просмотра списка магазинов
      # """
     def get(self, request, *args, **kwargs):
-        Shop.objects.create(name='superkonekt', url='', state=True, filename='')
+        Shop.objects.create(name='nasviazi', url='', state=True, filename='')
         queryset = Shop.objects.all()
         serializer = ShopSerializer(queryset)
         return Response(serializer.data)
