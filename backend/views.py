@@ -351,8 +351,8 @@ class PartnerUpdate(APIView):
                 product, _ = Product.objects.get_or_create(name=item['name'], category_id=item['category'])
 
                 product_info = ProductInfo.objects.create(product_id=product.id,
+                                                          name=item['name'],
                                                           external_id=item['id'],
-                                                          model=item['name'],
                                                           price=item['price'],
                                                           price_rrc=item['price_rrc'],
                                                           quantity=item['quantity'],
