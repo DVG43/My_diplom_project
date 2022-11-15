@@ -4,6 +4,8 @@ from django.contrib.auth.admin import UserAdmin
 from backend.models import User, Shop, Category, Product, ProductInfo, Parameter, ProductParameter, Order, OrderItem, \
     Contact, ConfirmEmailToken
 
+# admin.site.register(User)
+
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):

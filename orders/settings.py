@@ -133,6 +133,8 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'backend.User'
 
+# SESSION_COOKIE_SECURE = False
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -142,8 +144,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_USE_TLS = True
 
 EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_HOST_USER = 'dvgaluta@gmail.com'
-EMAIL_HOST_PASSWORD = '****************'
+EMAIL_HOST_USER = 'santuk@mail.ru'
+EMAIL_HOST_PASSWORD = '********'
 EMAIL_PORT = '465'
 EMAIL_USE_SSL = True
 SERVER_EMAIL = EMAIL_HOST_USER
@@ -167,3 +169,5 @@ REST_FRAMEWORK = {
 }
 
 DEFAULT_AUTO_FIELD ='django.db.models.AutoField'
+
+#LOGIN_REDIRECT_URL = "orders"
