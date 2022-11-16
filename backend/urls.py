@@ -18,9 +18,9 @@ from django.urls import path
 from django_rest_passwordreset.views import reset_password_request_token, reset_password_confirm
 
 from backend.views import PartnerUpdate, RegisterAccount, CategoryView, ShopView, ProductInfoView, \
-    BasketView, ContactView, OrderView, PartnerState, PartnerOrders
+    BasketView, ContactView, OrderView, PartnerState, PartnerOrders, LoginAccount,  ConfirmAccount, AccountDetails
 
-# poka iskluchil  LoginAccount  ConfirmAccount  AccountDetails,
+# poka iskluchil  ,
 app_name = 'backend'
 urlpatterns = [
 
@@ -34,9 +34,13 @@ urlpatterns = [
      path('basket/', BasketView.as_view(), name='basket'),  #   работа с корзиной пользователя GET POST PUT DEL
      path('order/', OrderView.as_view(), name='order'),   # получения и размешения заказов пользователями GET POST
      path('user/contact/', ContactView.as_view(), name='user-contact'),  # работа с контактами покупателей GET POST PUT DEL
-     # path('user/password_reset', reset_password_request_token, name='password-reset'),
-     # path('user/password_reset/confirm', reset_password_confirm, name='password-reset-confirm'),
-
+     path('user/password_reset', reset_password_request_token, name='password-reset'),
+     path('user/password_reset/confirm', reset_password_confirm, name='password-reset-confirm'),
+     path('user/register', RegisterAccount.as_view(), name='user-register'),
+     path('user/register/confirm', ConfirmAccount.as_view(), name='user-register-confirm'),
+     path('user/details', AccountDetails.as_view(), name='user-details'),
+     path('user/contact', ContactView.as_view(), name='user-contact'),
+     path('user/login', LoginAccount.as_view(), name='user-login'),
      # path('sensors/<pk>/', SensoridView.as_view()),
 ]
 

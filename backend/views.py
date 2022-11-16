@@ -18,13 +18,14 @@ from rest_framework.views import APIView
 from json import loads as load_json
 from yaml import load as load_yaml, Loader
 
-#  убрал ConfirmEmailToken
-from backend.models import Shop, Category, Product, ProductInfo, Parameter, ProductParameter, Order, OrderItem, Contact
+
+from backend.models import Shop, Category, Product, ProductInfo, Parameter, ProductParameter, Order, OrderItem, \
+    Contact, ConfirmEmailToken
 from backend.serializers import UserSerializer, CategorySerializer, ShopSerializer, \
     ProductInfoSerializer, OrderItemSerializer, OrderSerializer, ContactSerializer
 
 
-# from backend.signals import new_user_registered, new_order
+from backend.signals import new_user_registered, new_order
 
 
 class RegisterAccount(APIView):
@@ -66,90 +67,90 @@ class RegisterAccount(APIView):
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 
 
-# class ConfirmAccount(APIView):
-#     """
-#     Класс для подтверждения почтового адреса
-#     """
-#     # Регистрация методом POST
-#     def post(self, request, *args, **kwargs):
-#
-#         # проверяем обязательные аргументы
-#         if {'email', 'token'}.issubset(request.data):
-#
-#             token = ConfirmEmailToken.objects.filter(user__email=request.data['email'],
-#                                                      key=request.data['token']).first()
-#             if token:
-#                 token.user.is_active = True
-#                 token.user.save()
-#                 token.delete()
-#                 return JsonResponse({'Status': True})
-#             else:
-#                 return JsonResponse({'Status': False, 'Errors': 'Неправильно указан токен или email'})
-#
-#         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
-#
+class ConfirmAccount(APIView):
+    """
+    Класс для подтверждения почтового адреса
+    """
+    # Регистрация методом POST
+    def post(self, request, *args, **kwargs):
 
-# class AccountDetails(APIView):
-#     """
-#     Класс для работы данными пользователя
-#     """
-#
-#     # получить данные
-#     def get(self, request, *args, **kwargs):
-#         if not request.user.is_authenticated:
-#             return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
-#
-#         serializer = UserSerializer(request.user)
-#         return Response(serializer.data)
-#
-#     # Редактирование методом POST
-#     def post(self, request, *args, **kwargs):
-#         if not request.user.is_authenticated:
-#             return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
-#         # проверяем обязательные аргументы
-#
-#         if 'password' in request.data:
-#             errors = {}
-#             # проверяем пароль на сложность
-#             try:
-#                 validate_password(request.data['password'])
-#             except Exception as password_error:
-#                 error_array = []
-#                 # noinspection PyTypeChecker
-#                 for item in password_error:
-#                     error_array.append(item)
-#                 return JsonResponse({'Status': False, 'Errors': {'password': error_array}})
-#             else:
-#                 request.user.set_password(request.data['password'])
-#
-#         # проверяем остальные данные
-#         user_serializer = UserSerializer(request.user, data=request.data, partial=True)
-#         if user_serializer.is_valid():
-#             user_serializer.save()
-#             return JsonResponse({'Status': True})
-#         else:
-#             return JsonResponse({'Status': False, 'Errors': user_serializer.errors})
-#
+        # проверяем обязательные аргументы
+        if {'email', 'token'}.issubset(request.data):
 
-# class LoginAccount(APIView):
-#     """
-#     Класс для авторизации пользователей
-#     """
-#     # Авторизация методом POST
-#     def post(self, request, *args, **kwargs):
-#
-#         if {'email', 'password'}.issubset(request.data):
-#             user = authenticate(request, username=request.data['email'], password=request.data['password'])
-#
-#             if user is not None:
-#                 if user.is_active:
-#                     token, _ = Token.objects.get_or_create(user=user)
-#
-#                     return JsonResponse({'Status': True, 'Token': token.key})
-#
-#             return JsonResponse({'Status': False, 'Errors': 'Не удалось авторизовать'})
-#
-#         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
+            token = ConfirmEmailToken.objects.filter(user__email=request.data['email'],
+                                                     key=request.data['token']).first()
+            if token:
+                token.user.is_active = True
+                token.user.save()
+                token.delete()
+                return JsonResponse({'Status': True})
+            else:
+                return JsonResponse({'Status': False, 'Errors': 'Неправильно указан токен или email'})
+
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
+
+
+class AccountDetails(APIView):
+    """
+    Класс для работы данными пользователя
+    """
+
+    # получить данные
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
+
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+    # Редактирование методом POST
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
+        # проверяем обязательные аргументы
+
+        if 'password' in request.data:
+            errors = {}
+            # проверяем пароль на сложность
+            try:
+                validate_password(request.data['password'])
+            except Exception as password_error:
+                error_array = []
+                # noinspection PyTypeChecker
+                for item in password_error:
+                    error_array.append(item)
+                return JsonResponse({'Status': False, 'Errors': {'password': error_array}})
+            else:
+                request.user.set_password(request.data['password'])
+
+        # проверяем остальные данные
+        user_serializer = UserSerializer(request.user, data=request.data, partial=True)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return JsonResponse({'Status': True})
+        else:
+            return JsonResponse({'Status': False, 'Errors': user_serializer.errors})
+
+
+class LoginAccount(APIView):
+    """
+    Класс для авторизации пользователей
+    """
+    # Авторизация методом POST
+    def post(self, request, *args, **kwargs):
+
+        if {'email', 'password'}.issubset(request.data):
+            user = authenticate(request, username=request.data['email'], password=request.data['password'])
+
+            if user is not None:
+                if user.is_active:
+                    token, _ = Token.objects.get_or_create(user=user)
+
+                    return JsonResponse({'Status': True, 'Token': token.key})
+
+            return JsonResponse({'Status': False, 'Errors': 'Не удалось авторизовать'})
+
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
 
 
 class CategoryView(ListAPIView):
@@ -168,15 +169,6 @@ class ShopView(ListAPIView):
     queryset = Shop.objects.filter(state=True)
     serializer_class = ShopSerializer
 
-# class ShopView(APIView):
-#      # """
-#      # Класс для просмотра списка магазинов
-#      # """
-#     def get(self, request, *args, **kwargs):
-#         Shop.objects.create(name='nasviazi', url='', state=True, filename='')
-#         queryset = Shop.objects.all()
-#         serializer = ShopSerializer(queryset)
-#         return Response(serializer.data)
 
 class ProductInfoView(APIView):
         # """
