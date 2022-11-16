@@ -59,10 +59,14 @@ class UserManager(BaseUserManager):
 
         return self._create_user(email, password, **extra_fields)
 
+
 class BaseModel(models.Model):
     objects = models.Manager()
+
     class Meta:
         abstract = True
+
+
 class User(AbstractUser):
     """
     Стандартная модель пользователей
@@ -176,7 +180,8 @@ class ProductInfo(BaseModel):
         ]
 
 
-#  models.UniqueConstraint(fields=['product', 'shop', 'external_id'], name='unique_product_info') это было в моделе продуктинфо
+#  models.UniqueConstraint(fields=['product', 'shop', 'external_id'], name='unique_product_info')
+#  это было в моделе продуктинфо
 
 
 # Перечень различных параметров продукта.
@@ -275,6 +280,9 @@ class OrderItem(BaseModel):
 
 
 class ConfirmEmailToken(models.Model):
+
+    objects = None   # это возможно нужно убрать, по совету от IDE
+
     class Meta:
         verbose_name = 'Токен подтверждения Email'
         verbose_name_plural = 'Токены подтверждения Email'

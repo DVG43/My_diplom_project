@@ -5,12 +5,12 @@ from distutils.util import strtobool
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
-from django.core.validators import URLValidator
+# from django.core.exceptions import ValidationError
+# from django.core.validators import URLValidator
 from django.db import IntegrityError
 from django.db.models import Q, Sum, F
 from django.http import JsonResponse
-from requests import get
+# from requests import get
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -165,15 +165,15 @@ class ShopView(ListAPIView):
     """
     Класс для просмотра списка магазинов
     """
-    # Shop.objects.create(name='superkonekt', url='', state=True, filename='')   # новая строка для записи нового магазина.
+    # новая строка для записи нового магазина.
+    # Shop.objects.create(name='superkonekt', url='', state=True, filename='')
     queryset = Shop.objects.filter(state=True)
     serializer_class = ShopSerializer
 
 
+# Класс для поиска товаров
 class ProductInfoView(APIView):
-        # """
-        # Класс для поиска товаров
-        # """
+
     def get(self, request, *args, **kwargs):
 
         query = Q(shop__state=True)
@@ -329,7 +329,6 @@ class PartnerUpdate(APIView):
                 data = load_yaml(stream, Loader=Loader)
                 print(data)
 
-
             shop, _ = Shop.objects.get_or_create(name=data['shop'])
 
         # пока такую запись (name=data['shop'], user_id=request.user.id)  поменял
@@ -359,6 +358,7 @@ class PartnerUpdate(APIView):
 
         # return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})external_id=item['id']
         return JsonResponse({'Status': False, 'Errors': 'Не верно указан путь к файлу'})
+
 
 class PartnerState(APIView):
     """
@@ -527,3 +527,4 @@ class OrderView(APIView):
                         return JsonResponse({'Status': True})
 
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
+
