@@ -26,8 +26,8 @@ urlpatterns = [
 
      path('create/account/', RegisterAccount .as_view(), name='user-register'),  # Регистрация методом POST
      path('partner/update/', PartnerUpdate.as_view(), name='partner-update'),   # Oбновления прайса от поставщика POST
-     path('partner_status/', PartnerState.as_view(), name='partner-state'),  # работы со статусом поставщика GET and POST
-     path('partner_orders/', PartnerOrders.as_view(), name='partner-orders'),   #  получения заказов поставщиками GET
+     path('partner/state/', PartnerState.as_view(), name='partner-state'),  # работы со статусом поставщика GET and POST
+     path('partner/orders/', PartnerOrders.as_view(), name='partner-orders'),   #  получения заказов поставщиками GET
      path('shop/', ShopView.as_view(), name='shops'),  # для просмотра списка магазинов GET
      path('category/', CategoryView.as_view(), name='categories'),  #  для просмотра категорий
      path('product/', ProductInfoView .as_view(), name='product'),  # для поиска товаров GET
@@ -39,7 +39,6 @@ urlpatterns = [
      path('user/register', RegisterAccount.as_view(), name='user-register'),
      path('user/register/confirm', ConfirmAccount.as_view(), name='user-register-confirm'),
      path('user/details', AccountDetails.as_view(), name='user-details'),
-     path('user/contact', ContactView.as_view(), name='user-contact'),
      path('user/login', LoginAccount.as_view(), name='user-login'),
      # path('sensors/<pk>/', SensoridView.as_view()),
 ]

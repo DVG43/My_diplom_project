@@ -5,12 +5,12 @@ from distutils.util import strtobool
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
-# from django.core.exceptions import ValidationError
-# from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
 from django.db import IntegrityError
 from django.db.models import Q, Sum, F
 from django.http import JsonResponse
-# from requests import get
+from requests import get
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -59,7 +59,7 @@ class RegisterAccount(APIView):
                     user = user_serializer.save()
                     user.set_password(request.data['password'])
                     user.save()
-                    # new_user_registered.send(sender=self.__class__, user_id=user.id)
+                    new_user_registered.send(sender=self.__class__, user_id=user.id)
                     return JsonResponse({'Status': True})
                 else:
                     return JsonResponse({'Status': False, 'Errors': user_serializer.errors})
@@ -523,7 +523,7 @@ class OrderView(APIView):
                     return JsonResponse({'Status': False, 'Errors': 'Неправильно указаны аргументы'})
                 else:
                     if is_updated:
-                        # new_order.send(sender=self.__class__, user_id=request.user.id)
+                        new_order.send(sender=self.__class__, user_id=request.user.id)
                         return JsonResponse({'Status': True})
 
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
