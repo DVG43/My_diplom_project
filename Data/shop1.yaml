@@ -10,7 +10,6 @@ categories:
 goods:
   - id: 4216292
     category: 224
-    model: apple/iphone/xs-max
     name: Смартфон Apple iPhone XS Max 512GB (золотистый)
     price: 110000
     price_rrc: 116990
@@ -22,7 +21,6 @@ goods:
       "Цвет": золотистый
   - id: 4216313
     category: 224
-    model: apple/iphone/xr
     name: Смартфон Apple iPhone XR 256GB (красный)
     price: 65000
     price_rrc: 69990
@@ -34,7 +32,6 @@ goods:
       "Цвет": красный
   - id: 4216226
     category: 224
-    model: apple/iphone/xr
     name: Смартфон Apple iPhone XR 256GB (черный)
     price: 65000
     price_rrc: 69990
@@ -46,7 +43,6 @@ goods:
       "Цвет": черный
   - id: 4672670
     category: 224
-    model: apple/iphone/xr
     name: Смартфон Apple iPhone XR 128GB (синий)
     price: 60000
     price_rrc: 64990

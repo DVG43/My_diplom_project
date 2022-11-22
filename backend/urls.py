@@ -34,12 +34,12 @@ urlpatterns = [
      path('basket/', BasketView.as_view(), name='basket'),  #   работа с корзиной пользователя GET POST PUT DEL
      path('order/', OrderView.as_view(), name='order'),   # получения и размешения заказов пользователями GET POST
      path('user/contact/', ContactView.as_view(), name='user-contact'),  # работа с контактами покупателей GET POST PUT DEL
-     path('user/password_reset', reset_password_request_token, name='password-reset'),
-     path('user/password_reset/confirm', reset_password_confirm, name='password-reset-confirm'),
-     path('user/register', RegisterAccount.as_view(), name='user-register'),
-     path('user/register/confirm', ConfirmAccount.as_view(), name='user-register-confirm'),
-     path('user/details', AccountDetails.as_view(), name='user-details'),
-     path('user/login', LoginAccount.as_view(), name='user-login'),
+     path('user/password_reset/', reset_password_request_token, name='password-reset'),
+     path('user/password_reset/confirm/', reset_password_confirm, name='password-reset-confirm'),
+     path('user/register/', RegisterAccount.as_view(), name='user-register'),
+     path('user/register/confirm/', ConfirmAccount.as_view(), name='user-register-confirm'),
+     path('user/details/', AccountDetails.as_view(), name='user-details'),
+     path('user/login/', LoginAccount.as_view(), name='user-login'),
      # path('sensors/<pk>/', SensoridView.as_view()),
 ]
 
