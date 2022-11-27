@@ -1,5 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.contenttypes.models import ContentType
+# from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -23,6 +23,11 @@ USER_TYPE_CHOICES = (
 )
 
 
+class BaseModel(models.Model):
+    objects = models.Manager()
+
+    class Meta:
+        abstract = True
 
 
 class UserManager(BaseUserManager):
@@ -58,13 +63,6 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self._create_user(email, password, **extra_fields)
-
-
-class BaseModel(models.Model):
-    objects = models.Manager()
-
-    class Meta:
-        abstract = True
 
 
 class User(AbstractUser):
