@@ -94,7 +94,7 @@ class User(AbstractUser):
             'Unselect this instead of deleting accounts.'
         ),
     )
-    type = models.CharField(verbose_name='Тип пользователя', choices=USER_TYPE_CHOICES, max_length=5, default='buyer')
+    type = models.CharField(verbose_name='Тип пользователя', choices=USER_TYPE_CHOICES, max_length=7, default='buyer')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -114,9 +114,9 @@ class User(AbstractUser):
 class Shop(BaseModel):
     name = models.CharField(max_length=50, verbose_name='Название')
     url = models.URLField(verbose_name='Ссылка', null=True, blank=True)
-    # user = models.OneToOneField(User, verbose_name='Пользователь',
-    #                             blank=True, null=True,
-    #                             on_delete=models.CASCADE)
+    user = models.OneToOneField(User, verbose_name='Пользователь',
+                                blank=True, null=True,
+                                on_delete=models.CASCADE)
     state = models.BooleanField(verbose_name='статус получения заказов', default=True)
     filename = models.FileField(upload_to='uploads/')
 
@@ -244,7 +244,7 @@ class Order(BaseModel):
     contact = models.ForeignKey(Contact, verbose_name='Контакт',
                                 blank=True, null=True,
                                 on_delete=models.CASCADE)
-    status = models.BooleanField()
+    # status = models.BooleanField()
 
     class Meta:
         verbose_name = 'Заказ'
