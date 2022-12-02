@@ -14,11 +14,13 @@ def client():
 
 
 @pytest.fixture
-def user_factory():
-    def factory(*args, **kwargs):
-        return baker.make(User, *args, **kwargs)
-
-    return factory
+def user():
+    return User.objects.create_user(first_name='Dmitrii',
+                                    last_name='Ivanov',
+                                    email='santuk@mail.ru',
+                                    password='1624',
+                                    company='OAO',
+                                    position='manager')
 
 
 @pytest.fixture
@@ -115,11 +117,6 @@ def test_get_shop(client, shop_factory):
 
 # Assert
     assert response.status_code == 200
-    # data = response.json()
-    # print(data)
-    # assert len(data) == len(shop)
-
-
 
 
 @pytest.mark.django_db
@@ -161,3 +158,35 @@ def test_get_product(client, shop_factory, category_factory, product_factory, pr
 
 # Assert
     assert response.status_code == 200
+
+
+# @pytest.mark.django_db
+# def test_get_order(client, user, order_factory, contact_factory):
+#
+# # Arrange
+#
+# # Act
+#     response = client.get('/API/V1/order/')
+#
+# # Assert
+#     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_post_login(client, user):
+
+    response = client.post('/API/V1/user/login/', data={'email': 'santuk@mail.ru',
+                                                        'password': '1624'})
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_get_contact(client, user, contact_factory):
+
+    response = client.get('/API/V1/user/contact/', data={'token': '*****************'})
+
+    assert response.status_code == 200
+
+
+

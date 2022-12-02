@@ -24,7 +24,6 @@ from backend.views import PartnerUpdate, RegisterAccount, CategoryView, ShopView
 app_name = 'backend'
 urlpatterns = [
 
-     path('create/account/', RegisterAccount .as_view(), name='user-register'),  # Регистрация методом POST
      path('partner/update/', PartnerUpdate.as_view(), name='partner-update'),   # Oбновления прайса от поставщика POST
      path('partner/state/', PartnerState.as_view(), name='partner-state'),  # работы со статусом поставщика GET and POST
      path('partner/orders/', PartnerOrders.as_view(), name='partner-orders'),   # получения заказов поставщиками GET
