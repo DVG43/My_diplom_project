@@ -1,8 +1,10 @@
 import pytest
+import uuid
+from django.urls import reverse
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 from model_bakery import baker
-
+from rest_framework.authtoken.models import Token
 from backend.models import Shop, Category, Product, ProductInfo, Parameter, ProductParameter, Order, OrderItem, \
     Contact, ConfirmEmailToken, User
 
@@ -14,13 +16,27 @@ def client():
 
 
 @pytest.fixture
-def user():
-    return User.objects.create_user(first_name='Dmitrii',
-                                    last_name='Ivanov',
-                                    email='santuk@mail.ru',
-                                    password='1624',
-                                    company='OAO',
-                                    position='manager')
+def test_password():
+    return 'strong-test-pass'
+
+
+@pytest.fixture
+def create_user(db, django_user_model, test_password):
+    def make_user(**kwargs):
+        kwargs['password'] = test_password
+        kwargs['email'] = 'santuk@mail.ru'
+        if 'username' not in kwargs:
+            kwargs['username'] = str(uuid.uuid4())
+        return django_user_model.objects.create_user(**kwargs)
+
+    return make_user
+
+@pytest.fixture
+def get_or_create_token(db, create_user):
+    user = create_user()
+    token, _ = Token.objects.get_or_create(user=user)
+    #print(token)
+    return token
 
 
 @pytest.fixture
@@ -103,6 +119,16 @@ def confirm_email_token_factory():
 
 
 # TESTS ********************************************************************************************************
+@pytest.mark.django_db
+def test_user_create():
+    User.objects.create_user('user@mail.ru', '1624')
+    assert User.objects.count() == 1
+
+
+@pytest.mark.django_db
+def test_unauthorized_request(client):
+    response = client.get('user/login/')
+    assert response.status_code == 404
 
 
 @pytest.mark.django_db
@@ -134,18 +160,6 @@ def test_get_category(client, category_factory):
 
 
 
-# @pytest.mark.django_db
-# def test_create_accaunt(client):
-# #     count = Message.objects.count()
-# #
-#     response = client.post('/API/V1/user/register/', data={'first_name': 'dmitrii',
-#                                                     'last_name':'galuta',
-#                                                     'email': 'santuk@mail.ru',
-#                                                     'password': 'hjgvmjgdfg1345',
-#                                                     'company': 'jhgjhj',
-#                                                     'position': 'jghhgv'})
-#
-#     assert response.status_code == 201
 
 
 @pytest.mark.django_db
@@ -160,33 +174,36 @@ def test_get_product(client, shop_factory, category_factory, product_factory, pr
     assert response.status_code == 200
 
 
-# @pytest.mark.django_db
-# def test_get_order(client, user, order_factory, contact_factory):
-#
-# # Arrange
-#
-# # Act
-#     response = client.get('/API/V1/order/')
-#
-# # Assert
-#     assert response.status_code == 200
+@pytest.mark.skip(reason='test  is not redy')
+def test_get_order(client, create_user, order_factory, contact_factory):
 
+# Arrange
 
-@pytest.mark.django_db
-def test_post_login(client, user):
+# Act
+    response = client.get('/API/V1/order/')
 
-    response = client.post('/API/V1/user/login/', data={'email': 'santuk@mail.ru',
-                                                        'password': '1624'})
-
+# Assert
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
-def test_get_contact(client, user, contact_factory):
-
-    response = client.get('/API/V1/user/contact/', data={'token': '*****************'})
+def test_get_contact(client, create_user, get_or_create_token, contact_factory):
+    token = get_or_create_token()
+    client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+    response = client.get('/API/V1/user/contact/')
 
     assert response.status_code == 200
 
 
+@pytest.mark.skip(reason='test  is not redy')
+def test_create_accaunt(client):
+#     count = Message.objects.count()
+#
+    response = client.post('/API/V1/user/register/', data={'first_name': 'dmitrii',
+                                                    'last_name':'galuta',
+                                                    'email': 'santuk@mail.ru',
+                                                    'password': 'hjgvmjgdfg1345',
+                                                    'company': 'jhgjhj',
+                                                    'position': 'jghhgv'})
 
+    assert response.status_code == 200
