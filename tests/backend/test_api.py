@@ -22,6 +22,7 @@ def test_password():
 
 @pytest.fixture
 def create_user(db, django_user_model, test_password):
+    # фикстура создания пользователя
     def make_user(**kwargs):
         kwargs['password'] = test_password
         kwargs['email'] = 'santuk@mail.ru'
@@ -33,10 +34,20 @@ def create_user(db, django_user_model, test_password):
 
 @pytest.fixture
 def get_or_create_token(db, create_user):
+    # фикстура создания токена
     user = create_user()
     token, _ = Token.objects.get_or_create(user=user)
     #print(token)
     return token
+
+
+@pytest.fixture
+def api_client_with_credentials(db, create_user, client):
+    # фикстура автоматической авторизации без токена.
+    user = create_user()
+    client.force_authenticate(user=user)
+    yield client
+    client.force_authenticate(user=None)
 
 
 @pytest.fixture
@@ -118,7 +129,7 @@ def confirm_email_token_factory():
     return factory
 
 
-# TESTS ********************************************************************************************************
+# TESTS GET ********************************************************************************************************
 @pytest.mark.django_db
 def test_user_create():
     User.objects.create_user('user@mail.ru', '1624')
@@ -174,25 +185,50 @@ def test_get_product(client, shop_factory, category_factory, product_factory, pr
     assert response.status_code == 200
 
 
-@pytest.mark.skip(reason='test  is not redy')
-def test_get_order(client, create_user, order_factory, contact_factory):
+@pytest.mark.django_db
+def test_get_order(client, create_user, order_factory, contact_factory, api_client_with_credentials):
 
 # Arrange
 
 # Act
-    response = client.get('/API/V1/order/')
+    response = api_client_with_credentials.get('/API/V1/order/')
 
 # Assert
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
-def test_get_contact(client, create_user, get_or_create_token, contact_factory):
-    token = get_or_create_token()
-    client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
-    response = client.get('/API/V1/user/contact/')
+def test_get_contact(client, create_user, api_client_with_credentials, contact_factory):
+    # закоментил код с аутентификацией  которая не работает в таком виде
+    # token = get_or_create_token()
+    # client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+    response = api_client_with_credentials.get('/API/V1/user/contact/')
 
     assert response.status_code == 200
+
+@pytest.mark.django_db
+def test_get_basket(client, create_user, api_client_with_credentials, order_factory,
+                    order_item_factory, product_factory, product_info_factory,
+                    parameter_factory, product_parameter_factory):
+
+    response = api_client_with_credentials.post('/API/V1/basket/')
+
+    assert response.status_code == 200
+
+
+@pytest.mark.skip(reason='test  is not redy')
+def test_get_partners_orders(client, create_user, api_client_with_credentials, shop_factory,
+                             order_factory, order_item_factory, product_factory, product_info_factory,
+                             parameter_factory, product_parameter_factory):
+
+    response = api_client_with_credentials.post('/API/V1/partner/orders/')
+
+    assert response.status_code == 200
+
+
+
+# TESTS POST ********************************************************************************************************
+
 
 
 @pytest.mark.skip(reason='test  is not redy')
