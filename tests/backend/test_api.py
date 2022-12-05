@@ -34,7 +34,7 @@ def create_user(db, django_user_model, test_password):
 
 @pytest.fixture
 def get_or_create_token(db, create_user):
-    # фикстура создания токена
+    # фикстура создания токена пока не используется
     user = create_user()
     token, _ = Token.objects.get_or_create(user=user)
     #print(token)
@@ -43,7 +43,7 @@ def get_or_create_token(db, create_user):
 
 @pytest.fixture
 def api_client_with_credentials(db, create_user, client):
-    # фикстура автоматической авторизации без токена.
+    # фикстура автоматической авторизации без токена - используется она
     user = create_user()
     client.force_authenticate(user=user)
     yield client
@@ -206,40 +206,25 @@ def test_get_contact(client, create_user, api_client_with_credentials, contact_f
 
     assert response.status_code == 200
 
+
 @pytest.mark.django_db
 def test_get_basket(client, create_user, api_client_with_credentials, order_factory,
                     order_item_factory, product_factory, product_info_factory,
                     parameter_factory, product_parameter_factory):
 
-    response = api_client_with_credentials.post('/API/V1/basket/')
+    response = api_client_with_credentials.get('/API/V1/basket/')
 
     assert response.status_code == 200
-
-
-@pytest.mark.skip(reason='test  is not redy')
-def test_get_partners_orders(client, create_user, api_client_with_credentials, shop_factory,
-                             order_factory, order_item_factory, product_factory, product_info_factory,
-                             parameter_factory, product_parameter_factory):
-
-    response = api_client_with_credentials.post('/API/V1/partner/orders/')
-
-    assert response.status_code == 200
-
 
 
 # TESTS POST ********************************************************************************************************
 
 
 
-@pytest.mark.skip(reason='test  is not redy')
-def test_create_accaunt(client):
-#     count = Message.objects.count()
-#
-    response = client.post('/API/V1/user/register/', data={'first_name': 'dmitrii',
-                                                    'last_name':'galuta',
-                                                    'email': 'santuk@mail.ru',
-                                                    'password': 'hjgvmjgdfg1345',
-                                                    'company': 'jhgjhj',
-                                                    'position': 'jghhgv'})
+@pytest.mark.django_db
+def test_chenge_product_in_bascet(client, create_user, api_client_with_credentials, product_info_factory, order_factory,
+                                  order_item_factory):
+
+    response = api_client_with_credentials.post('/API/V1/basket/', data={"product_info": 2, "quantity": 8})
 
     assert response.status_code == 200
