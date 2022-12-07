@@ -169,6 +169,16 @@ REST_FRAMEWORK = {
     ),
 
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+
+    'DEFAULT_THROTTLE_CLASSES': [
+        # 'rest_framework.throttling.UserRateThrottle',
+        # 'rest_framework.throttling.AnonRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '10/minute',
+        'anon': '10/minute',
+    }
+
 }
 
 DEFAULT_AUTO_FIELD ='django.db.models.AutoField'

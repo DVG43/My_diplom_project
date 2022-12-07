@@ -17,7 +17,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from json import loads as load_json
 from yaml import load as load_yaml, Loader
-
+from rest_framework.throttling import AnonRateThrottle
 
 from backend.models import Shop, Category, Product, ProductInfo, Parameter, ProductParameter, Order, OrderItem, \
     Contact, ConfirmEmailToken
@@ -72,6 +72,8 @@ class ConfirmAccount(APIView):
     Класс для подтверждения почтового адреса
     """
     # Регистрация методом POST
+    throttle_classes = [AnonRateThrottle]
+
     def post(self, request, *args, **kwargs):
 
         # проверяем обязательные аргументы
@@ -94,7 +96,7 @@ class AccountDetails(APIView):
     """
     Класс для работы данными пользователя
     """
-
+    throttle_classes = [AnonRateThrottle]
     # получить данные
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -159,7 +161,7 @@ class CategoryView(ListAPIView):
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-
+    throttle_classes = [AnonRateThrottle]
 
 class ShopView(ListAPIView):
     """
@@ -167,10 +169,14 @@ class ShopView(ListAPIView):
     """
     queryset = Shop.objects.filter(state=True)
     serializer_class = ShopSerializer
-
+    throttle_classes = [AnonRateThrottle]
 
 # Класс для поиска товаров
+
+
 class ProductInfoView(APIView):
+
+    throttle_classes = [AnonRateThrottle]
 
     def get(self, request, *args, **kwargs):
 
@@ -199,8 +205,9 @@ class BasketView(APIView):
     """
     Класс для работы с корзиной пользователя
     """
-
+    throttle_classes = [AnonRateThrottle]
     # получить корзину
+
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
@@ -293,6 +300,8 @@ class PartnerUpdate(APIView):
     """
     Класс для обновления прайса от поставщика
     """
+    throttle_classes = [AnonRateThrottle]
+
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
@@ -357,7 +366,7 @@ class PartnerState(APIView):
     """
     Класс для работы со статусом поставщика
     """
-
+    throttle_classes = [AnonRateThrottle]
     # получить текущий статус
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -392,6 +401,8 @@ class PartnerOrders(APIView):
     """
     Класс для получения заказов поставщиками
     """
+    throttle_classes = [AnonRateThrottle]
+
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
@@ -413,6 +424,7 @@ class ContactView(APIView):
     """
     Класс для работы с контактами покупателей
     """
+    throttle_classes = [AnonRateThrottle]
 
     # получить мои контакты
     def get(self, request, *args, **kwargs):
@@ -485,8 +497,9 @@ class OrderView(APIView):
     """
     Класс для получения и размешения заказов пользователями
     """
-
+    throttle_classes = [AnonRateThrottle]
     # получить мои заказы
+
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
