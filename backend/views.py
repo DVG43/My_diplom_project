@@ -25,7 +25,7 @@ from backend.serializers import UserSerializer, CategorySerializer, ShopSerializ
     ProductInfoSerializer, OrderItemSerializer, OrderSerializer, ContactSerializer
 
 
-from backend.signals import new_user_registered, new_order
+from backend.task import new_user_registered, new_order
 
 
 class RegisterAccount(APIView):

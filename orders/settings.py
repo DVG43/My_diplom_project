@@ -181,6 +181,14 @@ REST_FRAMEWORK = {
 
 }
 
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+#CELERY_BROKER_URL = "amqp://myuser:mypassword@localhost:5672/myvhost"
+# Для использования  RabbitMQ в качестве брокера сообщений и Redis
+# в качестве серверной части результатов
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+
 DEFAULT_AUTO_FIELD ='django.db.models.AutoField'
 
 #LOGIN_REDIRECT_URL = "orders"
