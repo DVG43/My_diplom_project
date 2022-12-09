@@ -56,6 +56,21 @@ INSTALLED_APPS = [
 
 # 'django.db',
 
+SOCIALACCOUNT_PROVIDERS = {
+    'vk': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '8424369',
+            'secret': '***',
+            'key': ''
+        }
+    }
+}
+
+SITE_ID = 1
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -66,7 +81,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-SITE_ID = 1
 
 ROOT_URLCONF = 'orders.urls'
 
